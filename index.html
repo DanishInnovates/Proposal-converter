@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Client Proposal Generator</title>
+  <style>
+    /* Base Styles */
+    :root {
+      --primary-color: #2563eb;
+      --secondary-color: #3b82f6;
+      --text-color: #334155;
+      --light-gray: #f1f5f9;
+      --medium-gray: #e2e8f0;
+      --dark-gray: #64748b;
+      --white: #ffffff;
+      --black: #000000;
+      --font-main: 'Roboto', sans-serif;
+      --font-heading: 'Poppins', sans-serif;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: var(--font-main);
+      color: var(--text-color);
+      line-height: 1.6;
+      background-color: var(--light-gray);
+      padding: 20px;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: var(--font-heading);
+      margin-bottom: 1rem;
+      color: var(--primary-color);
+    }
+
+    h1 {
+      font-size: 2rem;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      border-bottom: 2px solid var(--medium-gray);
+      padding-bottom: 0.5rem;
+      margin-top: 1.5rem;
+    }
+
+    /* Layout */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 2rem;
+      padding: 1rem;
+      background-color: var(--white);
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .toggle-container {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .toggle-btn {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: background-color 0.3s;
+      margin: 0 0.5rem;
+    }
+
+    .toggle-btn:hover {
+      background-color: var(--secondary-color);
+    }
+
+    .toggle-btn.secondary {
+      background-color: var(--dark-gray);
+    }
+
+    .toggle-btn.secondary:hover {
+      background-color: #94a3b8;
+    }
+
+    /* Form Styles */
+    .form-section {
+      background-color: var(--white);
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      margin-bottom: 2rem;
+      transition: all 0.3s ease;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .form-col {
+      flex: 1;
+      min-width: 250px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="date"],
+    textarea,
+    select {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid var(--medium-gray);
+      border-radius: 4px;
+      font-family: var(--font-main);
+      font-size: 1rem;
+      transition: border-color 0.3s;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      outline: none;
+      border-color: var(--primary-color);
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    /* Deliverables Section */
+    .deliverables-container {
+      margin-top: 1rem;
+    }
+
+    .deliverable-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .deliverable-item input {
+      flex: 1;
+    }
+
+    .btn-deliverable {
+      background-color: var(--dark-gray);
+      color: white;
+      border: none;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+
+    .btn-deliverable.add {
+      background-color: var(--primary-color);
+    }
+
+    .btn-deliverable.remove {
+      background-color: #dc2626;
+    }
+
+    /* Preview Section */
+    .preview-section {
+      background-color: var(--white);
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      margin-bottom: 2rem;
+      transition: all 0.3s ease;
+    }
+
+    .preview-content {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .preview-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .preview-header h1 {
+      color: var(--primary-color);
+    }
+
+    .preview-meta {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 2rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--medium-gray);
+    }
+
+    .signature-area {
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px dashed var(--dark-gray);
+    }
+
+    .signature-line {
+      width: 300px;
+      border-bottom: 1px solid var(--black);
+      margin: 2rem 0 0.5rem;
+    }
+
+    /* Utility Classes */
+    .hidden {
+      display: none;
+    }
+
+    .text-center {
+      text-align: center;
+    }
+
+    .mt-2 {
+      margin-top: 0.5rem;
+    }
+
+    .mt-4 {
+      margin-top: 1rem;
+    }
+
+    .mb-4 {
+      margin-bottom: 1rem;
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+      .form-col {
+        min-width: 100%;
+      }
+
+      .preview-meta {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .signature-line {
+        width: 200px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Client Proposal Generator</h1>
+      <p>Fill out the form below to create a professional client proposal</p>
+    </div>
+
+    <div class="toggle-container">
+      <button id="showFormBtn" class="toggle-btn">Show Form</button>
+      <button id="showPreviewBtn" class="toggle-btn secondary">Show Preview</button>
+      <button id="saveDraftBtn" class="toggle-btn secondary">Save Draft</button>
+      <button id="resetFormBtn" class="toggle-btn secondary">Reset Form</button>
+    </div>
+
+    <!-- Form Section -->
+    <section id="formSection" class="form-section">
+      <form id="proposalForm">
+        <h2>Client Information</h2>
+        <div class="form-row">
+          <div class="form-col">
+            <label for="clientName">Client Name</label>
+            <input type="text" id="clientName" name="clientName" required>
+          </div>
+          <div class="form-col">
+            <label for="companyName">Company Name</label>
+            <input type="text" id="companyName" name="companyName">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-col">
+            <label for="clientEmail">Email</label>
+            <input type="email" id="clientEmail" name="clientEmail" required>
+          </div>
+          <div class="form-col">
+            <label for="clientPhone">Phone</label>
+            <input type="tel" id="clientPhone" name="clientPhone">
+          </div>
+        </div>
+
+        <h2>Project Information</h2>
+        <div class="form-group">
+          <label for="projectTitle">Project Title</label>
+          <input type="text" id="projectTitle" name="projectTitle" required>
+        </div>
+
+        <div class="form-group">
+          <label for="projectDescription">Project Description</label>
+          <textarea id="projectDescription" name="projectDescription" required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="projectGoals">Project Goals</label>
+          <textarea id="projectGoals" name="projectGoals" required></textarea>
+        </div>
+
+        <h2>Deliverables</h2>
+        <div class="form-group">
+          <div class="deliverables-container" id="deliverablesContainer">
+            <!-- Deliverables will be added here -->
+          </div>
+          <button type="button" id="addDeliverableBtn" class="btn-deliverable add">+</button>
+          <span class="mt-2">Add deliverables</span>
+        </div>
+
+        <h2>Budget & Timeline</h2>
+        <div class="form-row">
+          <div class="form-col">
+            <label for="estimatedBudget">Estimated Budget</label>
+            <input type="text" id="estimatedBudget" name="estimatedBudget" required>
+          </div>
+          <div class="form-col">
+            <label for="paymentTerms">Payment Terms</label>
+            <select id="paymentTerms" name="paymentTerms" required>
+              <option value="">Select payment terms</option>
+              <option value="50% upfront, 50% on completion">50% upfront, 50% on completion</option>
+              <option value="30% upfront, 40% midway, 30% on completion">30% upfront, 40% midway, 30% on completion</option>
+              <option value="100% on completion">100% on completion</option>
+              <option value="Custom">Custom (specify in description)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-col">
+            <label for="startDate">Start Date</label>
+            <input type="date" id="startDate" name="startDate" required>
+          </div>
+          <div class="form-col">
+            <label for="endDate">End Date</label>
+            <input type="date" id="endDate" name="endDate" required>
+          </div>
+        </div>
+
+        <h2>Your Information</h2>
+        <div class="form-row">
+          <div class="form-col">
+            <label for="yourName">Your Name</label>
+            <input type="text" id="yourName" name="yourName" required>
+          </div>
+          <div class="form-col">
+            <label for="yourCompany">Your Company Name</label>
+            <input type="text" id="yourCompany" name="yourCompany">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-col">
+            <label for="yourEmail">Your Contact Email</label>
+            <input type="email" id="yourEmail" name="yourEmail" required>
+          </div>
+          <div class="form-col">
+            <label for="yourPhone">Your Phone</label>
+            <input type="tel" id="yourPhone" name="yourPhone">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="yourBio">Short Bio/About You</label>
+          <textarea id="yourBio" name="yourBio" required></textarea>
+        </div>
+      </form>
+    </section>
+
+    <!-- Preview Section -->
+    <section id="previewSection" class="preview-section hidden">
+      <div class="preview-content" id="proposalPreview">
+        <div class="preview-header">
+          <h1 id="previewProjectTitle">Project Title</h1>
+          <p>Prepared for: <span id="previewClientName">Client Name</span>, <span id="previewCompanyName">Company Name</span></p>
+          <p>Prepared by: <span id="previewYourName">Your Name</span>, <span id="previewYourCompany">Your Company</span></p>
+          <p id="previewDate">Date: Loading...</p>
+        </div>
+
+        <h2>Project Overview</h2>
+        <p id="previewProjectDescription">Project description will appear here.</p>
+
+        <h2>Project Goals</h2>
+        <p id="previewProjectGoals">Project goals will appear here.</p>
+
+        <h2>Deliverables</h2>
+        <ul id="previewDeliverables">
+          <li>Deliverables will appear here</li>
+        </ul>
+
+        <h2>Budget & Timeline</h2>
+        <p><strong>Estimated Budget:</strong> <span id="previewBudget">$0</span></p>
+        <p><strong>Payment Terms:</strong> <span id="previewPaymentTerms">To be determined</span></p>
+        <p><strong>Project Timeline:</strong> <span id="previewTimeline">Start date to End date</span></p>
+
+        <h2>About Us</h2>
+        <p id="previewYourBio">Your bio will appear here.</p>
+
+        <div class="signature-area">
+          <p>We look forward to working with you on this project. Please don't hesitate to contact us if you have any questions.</p>
+          <p>Sincerely,</p>
+          <div class="signature-line"></div>
+          <p id="previewYourNameSignature">Your Name</p>
+          <p id="previewYourCompanySignature">Your Company</p>
+          <p id="previewYourContact">your@email.com | (123) 456-7890</p>
+        </div>
+
+        <div class="preview-meta">
+          <div>
+            <p><strong>Client Contact:</strong></p>
+            <p id="previewClientContact">client@example.com | (123) 456-7890</p>
+          </div>
+          <div>
+            <p><strong>Proposal Valid Until:</strong></p>
+            <p id="previewValidUntil">30 days from date of issue</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center mt-4">
+        <button id="downloadPdfBtn" class="toggle-btn">Download as PDF</button>
+      </div>
+    </section>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // DOM Elements
+      const formSection = document.getElementById('formSection');
+      const previewSection = document.getElementById('previewSection');
+      const showFormBtn = document.getElementById('showFormBtn');
+      const showPreviewBtn = document.getElementById('showPreviewBtn');
+      const saveDraftBtn = document.getElementById('saveDraftBtn');
+      const resetFormBtn = document.getElementById('resetFormBtn');
+      const downloadPdfBtn = document.getElementById('downloadPdfBtn');
+      const addDeliverableBtn = document.getElementById('addDeliverableBtn');
+      const deliverablesContainer = document.getElementById('deliverablesContainer');
+      const proposalForm = document.getElementById('proposalForm');
+      
+      // Load saved draft if available
+      loadDraft();
+
+      // Toggle between form and preview
+      showFormBtn.addEventListener('click', function() {
+        formSection.classList.remove('hidden');
+        previewSection.classList.add('hidden');
+        showFormBtn.classList.remove('secondary');
+        showPreviewBtn.classList.add('secondary');
+      });
+
+      showPreviewBtn.addEventListener('click', function() {
+        if (validateForm()) {
+          updatePreview();
+          formSection.classList.add('hidden');
+          previewSection.classList.remove('hidden');
+          showFormBtn.classList.add('secondary');
+          showPreviewBtn.classList.remove('secondary');
+        }
+      });
+
+      // Save draft to localStorage
+      saveDraftBtn.addEventListener('click', function() {
+        const formData = new FormData(proposalForm);
+        const formObject = {};
+        
+        formData.forEach((value, key) => {
+          formObject[key] = value;
+        });
+        
+        // Save deliverables
+        const deliverables = [];
+        document.querySelectorAll('.deliverable-input').forEach(input => {
+          deliverables.push(input.value);
+        });
+        formObject.deliverables = deliverables;
+        
+        localStorage.setItem('proposalDraft', JSON.stringify(formObject));
+        alert('Draft saved successfully!');
+      });
+
+      // Reset form
+      resetFormBtn.addEventListener('click', function() {
+        if (confirm('Are you sure you want to reset the form? All data will be lost.')) {
+          proposalForm.reset();
+          deliverablesContainer.innerHTML = '';
+          localStorage.removeItem('proposalDraft');
+        }
+      });
+
+      // Add deliverable field
+      addDeliverableBtn.addEventListener('click', function() {
+        addDeliverableField();
+      });
+
+      // Download as PDF
+      downloadPdfBtn.addEventListener('click', function() {
+        const clientName = document.getElementById('clientName').value || 'Client';
+        const element = document.getElementById('proposalPreview');
+        const opt = {
+          margin: 10,
+          filename: `Client_Proposal_${clientName.replace(/\s+/g, '_')}.pdf`,
+          image: { type: 'jpeg', quality: 0.98 },
+          html2canvas: { scale: 2 },
+          jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+
+        html2pdf().set(opt).from(element).save();
+      });
+
+      // Helper Functions
+      function addDeliverableField(value = '') {
+        const deliverableId = Date.now();
+        const deliverableDiv = document.createElement('div');
+        deliverableDiv.className = 'deliverable-item';
+        deliverableDiv.innerHTML = `
+          <input type="text" class="deliverable-input" placeholder="Enter deliverable" value="${value}">
+          <button type="button" class="btn-deliverable remove" data-id="${deliverableId}">-</button>
+        `;
+        deliverablesContainer.appendChild(deliverableDiv);
+        
+        // Add event listener to remove button
+        deliverableDiv.querySelector('.btn-deliverable.remove').addEventListener('click', function() {
+          deliverablesContainer.removeChild(deliverableDiv);
+        });
+      }
+
+      function validateForm() {
+        const requiredFields = proposalForm.querySelectorAll('[required]');
+        let isValid = true;
+        
+        requiredFields.forEach(field => {
+          if (!field.value.trim()) {
+            isValid = false;
+            field.style.borderColor = 'red';
+          } else {
+            field.style.borderColor = '';
+          }
+        });
+        
+        if (!isValid) {
+          alert('Please fill in all required fields.');
+          return false;
+        }
+        
+        return true;
+      }
+
+      function updatePreview() {
+        // Client Info
+        document.getElementById('previewClientName').textContent = document.getElementById('clientName').value;
+        document.getElementById('previewCompanyName').textContent = document.getElementById('companyName').value;
+        document.getElementById('previewClientContact').textContent = 
+          `${document.getElementById('clientEmail').value} | ${document.getElementById('clientPhone').value || 'N/A'}`;
+        
+        // Project Info
+        document.getElementById('previewProjectTitle').textContent = document.getElementById('projectTitle').value;
+        document.getElementById('previewProjectDescription').textContent = document.getElementById('projectDescription').value;
+        document.getElementById('previewProjectGoals').textContent = document.getElementById('projectGoals').value;
+        
+        // Deliverables
+        const deliverablesList = document.getElementById('previewDeliverables');
+        deliverablesList.innerHTML = '';
+        document.querySelectorAll('.deliverable-input').forEach(input => {
+          if (input.value.trim()) {
+            const li = document.createElement('li');
+            li.textContent = input.value;
+            deliverablesList.appendChild(li);
+          }
+        });
+        
+        // Budget & Timeline
+        document.getElementById('previewBudget').textContent = document.getElementById('estimatedBudget').value;
+        document.getElementById('previewPaymentTerms').textContent = document.getElementById('paymentTerms').value;
+        const startDate = formatDate(document.getElementById('startDate').value);
+        const endDate = formatDate(document.getElementById('endDate').value);
+        document.getElementById('previewTimeline').textContent = `${startDate} to ${endDate}`;
+        
+        // Your Info
+        document.getElementById('previewYourName').textContent = document.getElementById('yourName').value;
+        document.getElementById('previewYourCompany').textContent = document.getElementById('yourCompany').value;
+        document.getElementById('previewYourBio').textContent = document.getElementById('yourBio').value;
+        
+        // Signature area
+        document.getElementById('previewYourNameSignature').textContent = document.getElementById('yourName').value;
+        document.getElementById('previewYourCompanySignature').textContent = document.getElementById('yourCompany').value;
+        document.getElementById('previewYourContact').textContent = 
+          `${document.getElementById('yourEmail').value} | ${document.getElementById('yourPhone').value || 'N/A'}`;
+        
+        // Dates
+        const today = new Date();
+        document.getElementById('previewDate').textContent = `Date: ${today.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}`;
+        
+        const validUntil = new Date();
+        validUntil.setDate(today.getDate() + 30);
+        document.getElementById('previewValidUntil').textContent = validUntil.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+      }
+
+      function formatDate(dateString) {
+        if (!dateString) return 'N/A';
+        const date = new Date(dateString);
+        return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+      }
+
+      function loadDraft() {
+        const draft = localStorage.getItem('proposalDraft');
+        if (draft) {
+          const formObject = JSON.parse(draft);
+          
+          // Fill regular form fields
+          for (const key in formObject) {
+            if (key !== 'deliverables' && document.getElementById(key)) {
+              document.getElementById(key).value = formObject[key];
+            }
+          }
+          
+          // Fill deliverables
+          if (formObject.deliverables && formObject.deliverables.length > 0) {
+            deliverablesContainer.innerHTML = '';
+            formObject.deliverables.forEach(deliverable => {
+              if (deliverable.trim()) {
+                addDeliverableField(deliverable);
+              }
+            });
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
